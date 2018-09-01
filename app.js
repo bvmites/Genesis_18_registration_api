@@ -29,7 +29,7 @@ server.listen(4000);
         const db = client.db('Genesis-18');
 
         app.use('/signup', signup(db));
-        app.use('/user',user(db));
+        app.use('/user', user(db));
 
         app.use((req, res, next) => {
             let err = new Error('Not Found');
