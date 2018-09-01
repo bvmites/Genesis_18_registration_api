@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string",
+      "minLength": "7",
+      "maxLength": "7"
+    },
+    "phone_no": {
+      "type": "string",
+      "minLength": "10",
+      "maxLength": "10"
+    },
+    "token": {
+      "type": "string"
+    }
+  }
+}

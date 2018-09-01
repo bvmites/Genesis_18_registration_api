@@ -1,0 +1,56 @@
+{
+  "type": "object",
+  "properties": {
+    "name": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": "1"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": "1"
+          },
+          "minItems": 1
+        }
+      ]
+    },
+    "phone": {
+      "type": "string",
+      "minLength": "10",
+      "maxLength": "10"
+    },
+    "receiptNo": {
+      "type": "string",
+      "minLength": "1"
+    },
+    "year": {
+      "type": "string",
+      "minLength": "1"
+    },
+    "eventId": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": "24",
+        "maxLength": "24"
+      }
+    },
+    "registrationDate": {
+      "type": "string"
+    },
+    "branch": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "phone",
+    "receiptNo",
+    "year",
+    "eventId",
+    "registrationDate"
+  ]
+}
