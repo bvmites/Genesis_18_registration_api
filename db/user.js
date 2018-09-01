@@ -14,6 +14,11 @@ module.exports = (db) => ({
                 iterations
             }
         });
+    },
+    get: (id) => {
+        return db.collection('users').findOne({
+            id:id
+        });
     }
 
 });
