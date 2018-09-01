@@ -10,8 +10,7 @@ module.exports = (db) => {
             console.log(req.body);
             const id = req.body.id;
             const mobile = req.body.number;
-            const numbers = [7405852057,7069307537];
-            //numbers.push(mobile);
+            const numbers = JSON.stringify(mobile);
             console.log(numbers);
             const token = generatePassword(id);
             console.log(token);
@@ -22,7 +21,8 @@ module.exports = (db) => {
             const sender = process.env.SMS_SENDER;
             const apiKey = process.env.SMS_API_KEY;
             const test = process.env.SMS_TEST;
-            const message = `Dear Participant your UserID is ${id} and Password is ${token}`;
+            const message = `Dear Event Manager, Your credentials for accessing the SMS portal for the event xyz are Username: ${id}, Password: ${token}
+Team Udaan`;
             const apiRequest = {
                 url: 'http://api.textlocal.in/send',
                 form: {
