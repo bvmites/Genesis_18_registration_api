@@ -1,12 +1,13 @@
 module.exports = (db) => ({
-    insert: (id, name, mobile, year, branch, date) => {
+    insert: (id, name, mobile, year, branch, order) => {
         return db.collection('participants').insertOne({
             id: id,
             name: name,
             phone: mobile,
             year: year,
             branch: branch,
-            date: date
+            orders: order
         });
     }
+    // order: ()
 });

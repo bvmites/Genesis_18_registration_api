@@ -11,6 +11,9 @@ dotenv.config();
 
 const signup = require('./api/signup');
 const user = require('./api/user');
+const participant = require('./api/participants');
+
+const auth = require('./middleware/auth');
 
 const app = express();
 app.use(logger('dev'));
@@ -28,6 +31,7 @@ server.listen(4000);
         console.log('Connected to database.');
         const db = client.db('Genesis-18');
 
+        app.use('/participant', auth, participant(db));
         app.use('/signup', signup(db));
         app.use('/user', user(db));
 

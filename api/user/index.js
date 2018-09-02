@@ -9,10 +9,10 @@ module.exports = (db) => {
     // POST /users/login
     router.post('/login', async (request, response) => {
         try {
-            const {userid, password} = request.body;
-            const result = await user.get(userid);
+            const {user_id, password} = request.body;
+            const result = await user.get(user_id);
             const error = new Error();
-            if (!(userid && password)) {
+            if (!(user_id && password)) {
                 error.message = 'Invalid request';
                 error.code = 'MissingCredentials';
                 throw error;
@@ -27,7 +27,7 @@ module.exports = (db) => {
             if (result.password.hash === hashPassword(password, result.password.salt, result.password.iterations)) {
                 const payload = {
                     user: {
-                        userid
+                        user_id
                     }
                 };
                 const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRATION_TIME});

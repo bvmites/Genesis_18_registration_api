@@ -14,7 +14,6 @@ module.exports = (db) => {
             const name = req.body.name;
             const branch = req.body.branch;
             const year = req.body.year;
-            const date = req.body.date;
             const numbers = JSON.stringify(mobile);
             console.log(numbers);
             const result = await userDb.get(id);
@@ -32,7 +31,8 @@ module.exports = (db) => {
                 error.message = "Error related to insert data";
                 throw error;
             }
-            const participant = await participantDb.insert(id, name, mobile, year, branch, date);
+            let order = [];
+            const participant = await participantDb.insert(id, name, mobile, year, branch, order);
             if (participant != null) {
                 res.status(200).json("participant inserted");
             }

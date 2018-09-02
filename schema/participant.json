@@ -62,7 +62,8 @@
     "phone",
     "receiptNo",
     "year",
-    "eventId",
-    "registrationDate"
+    "registrationDate",
+    "branch",
+    "orders"
   ]
 }
