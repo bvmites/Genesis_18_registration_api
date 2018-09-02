@@ -5,6 +5,32 @@ const httpRequest = require('request-promise-native');
 module.exports = (db) => {
     const participantDB = require('../../db/participant')(db);
 
+    //POST  participant/
+    router.post('/events', async (request, response) => {
+        try{
+            const new_id = request.body.id;
+            const newparticipant = await participantDB.get(new_id);
+            console.log(newparticipant);
+            let events = [];
+            let sum = 0;
+            for(var i=0; i< newparticipant.orders.length;i++){
+                events.push(newparticipant.orders[i].events);
+                sum += newparticipant.orders[i].sum;
+            }
+            const ans = {
+                "events": events,
+                "sum": sum
+            };
+            console.log(ans);
+            response.status(200).send(ans);
+
+        }catch (e) {
+            console.log(e)
+        }
+    });
+
+    //POST participant/
+    router.post('/',async (request, response) => {
     //POST participant/:id
     router.post('/', async (request, response) => {
         try {
@@ -48,5 +74,6 @@ Team Udaan`;
             console.log(e)
         }
     });
+
     return router;
 };
