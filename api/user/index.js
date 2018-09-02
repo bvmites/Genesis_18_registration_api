@@ -6,7 +6,7 @@ module.exports = (db) => {
 
     const user = require('../../db/user')(db);
 
-    // POST /users/login
+    // POST /user/login
     router.post('/login', async (request, response) => {
         try {
             const id = request.body.id;
