@@ -30,8 +30,6 @@ module.exports = (db) => {
     });
 
     //POST participant/
-    router.post('/',async (request, response) => {
-    //POST participant/:id
     router.post('/', async (request, response) => {
         try {
             const new_id = request.body.id;
