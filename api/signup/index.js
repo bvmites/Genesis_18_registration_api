@@ -40,7 +40,10 @@ module.exports = (db) => {
             const insert = await userDb.create(id, mobile, token);
 
             let order = [];
-            let pendingOrder = [];
+            let pendingOrder = {
+                "events": [],
+                "sum": 0
+            };
             const participant = await participantDb.insert(id, name, mobile, year, branch, order, pendingOrder);
             if (participant != null && insert != null) {
                 res.status(200).json("user inserted \n participant inserted");
