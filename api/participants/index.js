@@ -14,7 +14,7 @@ module.exports = (db) => {
     router.post('/events', async (request, response) => {
 
         const newOrder = request.body;
-        try{
+        try {
             const error = new Error();
             if (!validator.validate(newOrder, newOrderSchema).valid) {
                 error.message = 'Invalid request';
@@ -26,7 +26,7 @@ module.exports = (db) => {
             console.log(newparticipant);
             let events = [];
             let sum = 0;
-            for(let i=0; i< newparticipant.orders.length;i++){
+            for (let i = 0; i < newparticipant.orders.length; i++) {
                 events.push(newparticipant.orders[i].events);
                 sum += newparticipant.orders[i].sum;
             }
@@ -37,7 +37,7 @@ module.exports = (db) => {
             console.log(ans);
             response.status(200).send(ans);
 
-        }catch (e) {
+        } catch (e) {
             if (e.code === 'ValidationException') {
                 response.status(405).json({message: e.message});
             } else {
@@ -59,6 +59,7 @@ module.exports = (db) => {
                 "paid": false
             };
             const newParticipant = await participantDB.get(new_id);
+            const participantId = newParticipant._id;
             console.log(newParticipant);
             newParticipant.orders.push(newOrder);
             const number = newParticipant.phone;
@@ -84,6 +85,14 @@ Team Udaan`;
             };
             const apiResponse = await httpRequest.post(apiRequest);
             console.log(apiResponse);
+            for (let i = 0; i < newOrder.events.length; ++i) {
+                const getParticipant = await participantDB.getParticipant(newOrder.events[i]);
+                const eventId = getParticipant._id;
+                getParticipant.participants.push(participantId);
+                console.log(getParticipant);
+                console.log(typeof getParticipant);
+                const updateParticipant = await participantDB.updateParticipant(eventId,getParticipant);
+            }
         }
         catch (e) {
             console.log(e)
