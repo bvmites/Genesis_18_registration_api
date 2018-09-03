@@ -2,18 +2,31 @@ const router = require('express').Router();
 const generateToken = require('../../utils/generateToken');
 const httpRequest = require('request-promise-native');
 
+const newOrderSchema = require('../../schema/orderSchema');
+
+const Validator = require('jsonschema').Validator;
+const validator = new Validator();
+
 module.exports = (db) => {
     const participantDB = require('../../db/participant')(db);
 
     //POST  participant/
     router.post('/events', async (request, response) => {
+
+        const newOrder = request.body;
         try{
+            const error = new Error();
+            if (!validator.validate(newOrder, newOrderSchema).valid) {
+                error.message = 'Invalid request';
+                error.code = 'ValidationException';
+                throw error;
+            }
             const new_id = request.body.id;
             const newparticipant = await participantDB.get(new_id);
             console.log(newparticipant);
             let events = [];
             let sum = 0;
-            for(var i=0; i< newparticipant.orders.length;i++){
+            for(let i=0; i< newparticipant.orders.length;i++){
                 events.push(newparticipant.orders[i].events);
                 sum += newparticipant.orders[i].sum;
             }
@@ -25,7 +38,11 @@ module.exports = (db) => {
             response.status(200).send(ans);
 
         }catch (e) {
-            console.log(e)
+            if (e.code === 'ValidationException') {
+                response.status(405).json({message: e.message});
+            } else {
+                response.status(500).json({message: e.message});
+            }
         }
     });
 

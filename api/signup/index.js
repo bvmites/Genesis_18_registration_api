@@ -1,13 +1,25 @@
 const router = require('express').Router();
 const httpRequest = require('request-promise-native');
 const generatePassword = require('../../utils/generatePassword');
+
+const newSignSchema = require('../../schema/signupSchema');
+
+const Validator = require('jsonschema').Validator;
+const validator = new Validator();
+
 module.exports = (db) => {
 
     const userDb = require('../../db/user')(db);
     const participantDb = require('../../db/participant')(db);
     router.post('/', async (req, res) => {
+        const newVar = req.body;
         try {
             const error = new Error();
+            if (!validator.validate(newVar, newSignSchema).valid) {
+                error.message = 'Invalid request';
+                error.code = 'ValidationException';
+                throw error;
+            }
             console.log(req.body);
             const id = req.body.id;
             const mobile = req.body.number;
@@ -59,7 +71,11 @@ Team Udaan`;
             console.log(apiResponse);
 
         } catch (e) {
-            console.log(e.message);
+            if (e.code === 'ValidationException') {
+                res.status(405).json({message: e.message});
+            } else {
+                res.status(500).json({message: e.message});
+            }
         }
     });
     return router;

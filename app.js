@@ -6,6 +6,7 @@ const logger = require('morgan');
 const dotenv = require('dotenv');
 const MongoClient = require('mongodb').MongoClient;
 const bodyparser = require('body-parser');
+const cors = require('cors');
 dotenv.config();
 
 
@@ -20,6 +21,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
+app.use(cors());
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended: false}));
 const server = require('http').createServer(app);

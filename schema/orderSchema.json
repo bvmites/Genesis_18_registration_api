@@ -1,0 +1,25 @@
+{
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "string",
+            "minLength": 1
+        },
+        "sum": {
+            "type": "number"
+        },
+        "events": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "minLength": 24,
+                "maxLength": 24
+            }
+        }
+    },
+    "required": [
+        "id",
+        "sum",
+        "events"
+    ]
+}
