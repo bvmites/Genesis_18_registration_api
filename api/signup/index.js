@@ -36,19 +36,13 @@ module.exports = (db) => {
             const token = generatePassword(id);
             console.log(token);
             const insert = await userDb.create(id, mobile, token);
-            /*if (insert != null) {
-                res.status(200).json("user inserted");
-            }*/
-            if(insert == null) {
+            if (insert == null) {
                 error.message = "Error related to insert data";
                 throw error;
             }
             let order = [];
             const participant = await participantDb.insert(id, name, mobile, year, branch, order);
-            /*if (participant != null) {
-                res.status(200).json("participant inserted");
-            }*/
-            if(participant == null) {
+            if (participant == null) {
                 error.message = "Error related to insert participant data";
                 throw error;
             }
@@ -68,11 +62,11 @@ Team Udaan`;
                 }
             };
             const apiResponse = await httpRequest.post(apiRequest);
-            if(apiResponse == null){
+            if (apiResponse == null) {
                 error.message = "messege sending problem";
                 throw error;
             }
-            else{
+            else {
                 res.status(200).json("user inserted and message sent");
             }
             console.log(apiResponse);
