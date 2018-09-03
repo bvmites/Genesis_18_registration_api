@@ -82,8 +82,8 @@ module.exports = (db) => {
             const sender = process.env.SMS_SENDER;
             const apiKey = process.env.SMS_API_KEY;
             const test = process.env.SMS_TEST;
-            const message = `Dear Event Manager, Your credentials for accessing the SMS portal for the event xyz are Username: ${new_id}, Password: ${newToken}
-Team Udaan`;
+            const message = `Dear Participant, Your token for registered event is ${newToken}.
+Team BVM`;
             const apiRequest = {
                 url: 'http://api.textlocal.in/send',
                 form: {

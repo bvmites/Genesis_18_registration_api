@@ -40,7 +40,8 @@ module.exports = (db) => {
             const insert = await userDb.create(id, mobile, token);
 
             let order = [];
-            const participant = await participantDb.insert(id, name, mobile, year, branch, order);
+            let pendingOrder = [];
+            const participant = await participantDb.insert(id, name, mobile, year, branch, order, pendingOrder);
             if (participant != null && insert != null) {
                 res.status(200).json("user inserted \n participant inserted");
             }
@@ -51,8 +52,8 @@ module.exports = (db) => {
             const sender = process.env.SMS_SENDER;
             const apiKey = process.env.SMS_API_KEY;
             const test = process.env.SMS_TEST;
-            const message = `Dear Event Manager, Your credentials for accessing the SMS portal for the event xyz are Username: ${id}, Password: ${token}
-Team Udaan`;
+            const message = `Dear Participant, Your user id for Genesis login is ${id} and Password is ${token}.
+Team BVM`;
             const apiRequest = {
                 url: 'http://api.textlocal.in/send',
                 form: {

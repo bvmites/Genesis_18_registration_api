@@ -1,13 +1,14 @@
 const ObjectId = require('mongodb').ObjectId;
 module.exports = (db) => ({
-    insert: (id, name, mobile, year, branch, order) => {
+    insert: (id, name, mobile, year, branch, order, pendingOrder) => {
         return db.collection('participants').insertOne({
             id: id,
             name: name,
             phone: mobile,
             year: year,
             branch: branch,
-            orders: order
+            orders: order,
+            pendingOrder: pendingOrder
         });
     },
     get: (id) => {
