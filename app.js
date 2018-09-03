@@ -7,8 +7,6 @@ const dotenv = require('dotenv');
 const MongoClient = require('mongodb').MongoClient;
 const bodyparser = require('body-parser');
 const cors = require('cors');
-dotenv.config();
-
 
 const signup = require('./api/signup');
 const user = require('./api/user');
@@ -24,9 +22,8 @@ app.use(cookieParser());
 app.use(cors());
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended: false}));
-const server = require('http').createServer(app);
-server.listen(4000);
 
+dotenv.config();
 (async () => {
     try {
         const client = await MongoClient.connect(process.env.DB, {useNewUrlParser: true});

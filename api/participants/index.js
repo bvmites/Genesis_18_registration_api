@@ -9,6 +9,7 @@ const validator = new Validator();
 
 module.exports = (db) => {
     const participantDB = require('../../db/participant')(db);
+    const eventDB = require('../../db/newEvent')(db);
 
     //POST  participant/
     router.post('/events', async (request, response) => {
@@ -65,6 +66,13 @@ module.exports = (db) => {
             console.log(number);
             const numbers = JSON.stringify(number);
             console.log(numbers);
+
+            let newEvent = [];
+            for (let i = 0; i<newOrder.events.length; i++){
+                let event = await eventDB.get(newOrder.events[i]).json();
+                newEvent.push(event);
+            }
+
             await participantDB.replace(new_id, newParticipant);
             response.status(200).json({message: "success"});
             const sender = process.env.SMS_SENDER;
