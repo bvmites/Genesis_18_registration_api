@@ -36,19 +36,19 @@ module.exports = (db) => {
             const token = generatePassword(id);
             console.log(token);
             const insert = await userDb.create(id, mobile, token);
-            if (insert != null) {
+            /*if (insert != null) {
                 res.status(200).json("user inserted");
-            }
-            else {
+            }*/
+            if(insert == null) {
                 error.message = "Error related to insert data";
                 throw error;
             }
             let order = [];
             const participant = await participantDb.insert(id, name, mobile, year, branch, order);
-            if (participant != null) {
+            /*if (participant != null) {
                 res.status(200).json("participant inserted");
-            }
-            else {
+            }*/
+            if(participant == null) {
                 error.message = "Error related to insert participant data";
                 throw error;
             }
@@ -68,13 +68,20 @@ Team Udaan`;
                 }
             };
             const apiResponse = await httpRequest.post(apiRequest);
+            if(apiResponse == null){
+                error.message = "messege sending problem";
+                throw error;
+            }
+            else{
+                res.status(200).json("user inserted and message sent");
+            }
             console.log(apiResponse);
 
         } catch (e) {
             if (e.code === 'ValidationException') {
                 res.status(405).json({message: e.message});
             } else {
-                res.status(500).json({message: e.message});
+                console.log(e.message);
             }
         }
     });

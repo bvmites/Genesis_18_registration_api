@@ -1,4 +1,4 @@
-import {ObjectId} from "mongodb";
+const ObjectId = require('mongodb').ObjectId;
 
 module.exports = (db) => ({
     get: (username) => {

@@ -24,6 +24,8 @@ app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended: false}));
 
 dotenv.config();
+const server = require('http').createServer(app);
+server.listen(4000);
 (async () => {
     try {
         const client = await MongoClient.connect(process.env.DB, {useNewUrlParser: true});
