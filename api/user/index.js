@@ -4,14 +4,16 @@ const hashPassword = require('../../utils/hashPassword');
 
 module.exports = (db) => {
 
-    const user = require('../../db/user')(db);
+    const userDB = require('../../db/user')(db);
+    const participantDB = require('../../db/participant')(db);
 
     // POST /user/login
     router.post('/login', async (request, response) => {
         try {
             const id = request.body.id;
             const password = request.body.password;
-            const result = await user.get(id);
+            const result = await userDB.get(id);
+            const participant = await participantDB.get(id);
             const error = new Error();
             if (!(id && password)) {
                 error.message = 'Invalid request';
@@ -32,7 +34,7 @@ module.exports = (db) => {
                     }
                 };
                 const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRATION_TIME});
-                response.status(200).json({token});
+                response.status(200).json({token,participant});
             }
             else {
                 error.message = 'Invalid username or password';
