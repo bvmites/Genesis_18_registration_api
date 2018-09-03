@@ -10,10 +10,12 @@ module.exports = (db) => {
     // POST /user/login
     router.post('/login', async (request, response) => {
         try {
-            const id = request.body.id;
+            const id = request.body.username;
             const password = request.body.password;
+
             const result = await userDB.get(id);
             const participant = await participantDB.get(id);
+
             const error = new Error();
             if (!(id && password)) {
                 error.message = 'Invalid request';
@@ -36,11 +38,13 @@ module.exports = (db) => {
                 const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRATION_TIME});
                 response.status(200).json({token,participant});
             }
+
             else {
                 error.message = 'Invalid username or password';
                 error.code = 'InvalidCredentials';
                 throw error;
             }
+
         } catch (e) {
             console.log(e);
             if (e.code === 'MissingCredentials') {
@@ -57,5 +61,4 @@ module.exports = (db) => {
     });
 
     return router;
-
 };
