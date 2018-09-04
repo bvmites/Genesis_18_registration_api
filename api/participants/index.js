@@ -108,7 +108,8 @@ module.exports = (db) => {
                 "events": request.body.events,
                 "sum": request.body.sum,
                 "token": newToken,
-                "paid": false
+                "paid": false,
+                "paidTo":""
             };
 
             const newParticipant = await participantDB.get(new_id);
