@@ -102,7 +102,7 @@ module.exports = (db) => {
             }
 
             const new_id = request.body.id;
-            const newToken = generateToken(request.body.id);
+            const newToken = 'O-'+generateToken(request.body.id);
 
             let newOrder = {
                 "events": request.body.events,

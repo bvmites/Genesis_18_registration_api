@@ -10,5 +10,5 @@ module.exports = (username) => {
         .update(hashedPassword)
         .digest('hex')
         .toString()
-        .slice(0, 6);
+        .slice(0, 4);
 };
