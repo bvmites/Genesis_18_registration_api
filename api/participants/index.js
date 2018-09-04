@@ -3,6 +3,7 @@ const generateToken = require('../../utils/generateToken');
 const httpRequest = require('request-promise-native');
 
 const newOrderSchema = require('../../schema/orderSchema');
+const pendingOrderSchema = require('../../schema/pendingOrderSchema');
 
 const Validator = require('jsonschema').Validator;
 const validator = new Validator();
@@ -38,6 +39,53 @@ module.exports = (db) => {
             } else {
                 response.status(500).json({message: e.message});
             }
+        }
+    });
+
+    //POST participant/pending
+    router.post('/pending', async (request,response) => {
+        try {
+            let order = request.body;
+            const error = new Error();
+            if (!validator.validate(order, pendingOrderSchema).valid) {
+                error.message = 'Invalid request';
+                error.code = 'ValidationException';
+                throw error;
+            }
+
+            let pending = request.body.pendingOrder;
+            let new_id = request.body.id;
+
+            console.log(pending);
+
+            let newParticipant = await participantDB.get(new_id);
+
+            console.log(newParticipant);
+
+            newParticipant.pendingOrder = pending;
+            console.log(newParticipant);
+            await participantDB.replace(new_id, newParticipant);
+
+            response.status(200).json({"message": "success"})
+        }
+        catch (e) {
+            if (e.code === 'ValidationException') {
+                response.status(405).json({message: e.message});
+            } else {
+                response.status(500).json({message: e.message});
+            }
+        }
+    });
+
+    //GET participant/{id}
+    router.get('/:id', async (request,response) => {
+        try{
+            let result = await participantDB.get(request.params.id);
+
+            response.status(200).json({result});
+        }
+        catch (e) {
+            console.log(e)
         }
     });
 
