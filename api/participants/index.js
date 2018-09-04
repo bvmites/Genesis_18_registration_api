@@ -113,7 +113,6 @@ module.exports = (db) => {
             };
 
             const newParticipant = await participantDB.get(new_id);
-            const participantId = newParticipant._id;
 
             newParticipant.orders.push(newOrder);
 
@@ -145,13 +144,6 @@ Team BVM`;
             };
 
             const apiResponse = await httpRequest.post(apiRequest);
-
-            for (let i = 0; i < newOrder.events.length; ++i) {
-                const getParticipant = await participantDB.getParticipant(newOrder.events[i]);
-                const eventId = getParticipant._id;
-                getParticipant.participants.push(participantId);
-                const updateParticipant = await participantDB.updateParticipant(eventId,getParticipant);
-            }
         }
         catch (e) {
             console.log(e)
