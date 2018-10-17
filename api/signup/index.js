@@ -36,6 +36,7 @@ module.exports = (db) => {
                 throw error;
             }
             const token = generatePassword(id);
+            console.log(token);
 
             const insert = await userDb.create(id, mobile, token);
 

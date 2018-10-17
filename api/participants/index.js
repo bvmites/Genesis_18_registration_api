@@ -19,19 +19,22 @@ module.exports = (db) => {
             const new_id = request.body.username;
             const newparticipant = await participantDB.get(new_id);
 
-            let events = [];
-            let sum = 0;
+            let orders = [];
+
             for (let i = 0; i < newparticipant.orders.length; i++) {
-                events.push(newparticipant.orders[i].events);
-                sum += newparticipant.orders[i].sum;
+                let events;
+                let sum;
+                events = newparticipant.orders[i].events;
+                sum = newparticipant.orders[i].sum;
+                orders.push({events,sum})
             }
 
-            const ans = {
-                "events": events,
-                "sum": sum
-            };
+            // const ans = {
+            //     "events": events,
+            //     "sum": sum
+            // };
 
-            response.status(200).send(ans);
+            response.status(200).send(orders);
 
         } catch (e) {
             if (e.code === 'ValidationException') {
@@ -56,11 +59,11 @@ module.exports = (db) => {
             let pending = request.body.pendingOrder;
             let new_id = request.body.id;
 
-            console.log(pending);
+            // console.log(pending);
 
             let newParticipant = await participantDB.get(new_id);
 
-            console.log(newParticipant);
+            // console.log(newParticipant);
 
             newParticipant.pendingOrder = pending;
             console.log(newParticipant);
@@ -113,6 +116,7 @@ module.exports = (db) => {
             };
 
             const newParticipant = await participantDB.get(new_id);
+            // console.log(newParticipant);
 
             newParticipant.orders.push(newOrder);
 
