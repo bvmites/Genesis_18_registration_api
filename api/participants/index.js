@@ -104,6 +104,7 @@ module.exports = (db) => {
                 throw error;
             }
 
+            console.log(request.body);
             const new_id = request.body.id;
             const newToken = 'O-'+generateToken(request.body.id);
 
