@@ -105,6 +105,7 @@ module.exports = (db) => {
             }
 
             let recaptchaToken = request.body.recaptchaToken;
+            console.log(recaptchaToken);
             const verifyCaptchaOptions = {
                 url: "https://www.google.com/recaptcha/api/siteverify",
                 json: true,
