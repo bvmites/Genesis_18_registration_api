@@ -15,11 +15,16 @@
                 "minLength": 24,
                 "maxLength": 24
             }
+        },
+        "recaptchaToken": {
+            "type": "string",
+            "minLength": 1
         }
     },
     "required": [
         "id",
         "sum",
-        "events"
+        "events",
+        "recaptchaToken"
     ]
 }

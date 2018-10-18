@@ -104,51 +104,69 @@ module.exports = (db) => {
                 throw error;
             }
 
-            console.log(request.body);
-            const new_id = request.body.id;
-            const newToken = 'O-'+generateToken(request.body.id);
-
-            let newOrder = {
-                "events": request.body.events,
-                "sum": request.body.sum,
-                "token": newToken,
-                "paid": false,
-                "paidTo":""
-            };
-
-            const newParticipant = await participantDB.get(new_id);
-            // console.log(newParticipant);
-
-            newParticipant.orders.push(newOrder);
-
-            const number = newParticipant.phone;
-            const numbers = JSON.stringify(number);
-
-            let newEvent = [];
-            for (let i = 0; i<newOrder.events.length; i++){
-                let event = await eventDB.get(newOrder.events[i]);
-                newEvent.push(event);
-            }
-
-            await participantDB.replace(new_id, newParticipant);
-            response.status(200).json({message: "success"});
-            const sender = process.env.SMS_SENDER;
-            const apiKey = process.env.SMS_API_KEY;
-            const test = process.env.SMS_TEST;
-            const message = `Dear Participant, Your token for registered event is ${newToken}.
-Team BVM`;
-            const apiRequest = {
-                url: 'http://api.textlocal.in/send',
+            let recaptchaToken = request.body.recaptchaToken;
+            const verifyCaptchaOptions = {
+                url: "https://www.google.com/recaptcha/api/siteverify",
+                json: true,
                 form: {
-                    apiKey,
-                    numbers,
-                    test,
-                    sender,
-                    message
+                    secret: process.env.CAPTCHA_SECRET,
+                    response: recaptchaToken
                 }
             };
 
-            const apiResponse = await httpRequest.post(apiRequest);
+            let captchaResponse = await httpRequest.post(verifyCaptchaOptions);
+
+            if(captchaResponse.success){
+                // console.log(request.body);
+                const new_id = request.body.id;
+                const newToken = 'O-'+generateToken(request.body.id);
+
+                let newOrder = {
+                    "events": request.body.events,
+                    "sum": request.body.sum,
+                    "token": newToken,
+                    "paid": false,
+                    "paidTo":""
+                };
+
+                const newParticipant = await participantDB.get(new_id);
+                // console.log(newParticipant);
+
+                newParticipant.orders.push(newOrder);
+
+                const number = newParticipant.phone;
+                const numbers = JSON.stringify(number);
+
+                let newEvent = [];
+                for (let i = 0; i<newOrder.events.length; i++){
+                    let event = await eventDB.get(newOrder.events[i]);
+                    newEvent.push(event);
+                }
+
+                await participantDB.replace(new_id, newParticipant);
+                response.status(200).json({message: "success"});
+                const sender = process.env.SMS_SENDER;
+                const apiKey = process.env.SMS_API_KEY;
+                const test = process.env.SMS_TEST;
+                const message = `Dear Participant, Your token for registered event is ${newToken}.
+Team BVM`;
+                const apiRequest = {
+                    url: 'http://api.textlocal.in/send',
+                    form: {
+                        apiKey,
+                        numbers,
+                        test,
+                        sender,
+                        message
+                    }
+                };
+
+                const apiResponse = await httpRequest.post(apiRequest);
+            }
+            else{
+                console.log("error in captcha");
+                return response.status(500).json({message: "error in captcha"});
+            }
         }
         catch (e) {
             console.log(e)
