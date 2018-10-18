@@ -116,6 +116,7 @@ module.exports = (db) => {
             };
 
             let captchaResponse = await httpRequest.post(verifyCaptchaOptions);
+            console.log(captchaResponse);
 
             if(captchaResponse.success){
                 // console.log(request.body);
