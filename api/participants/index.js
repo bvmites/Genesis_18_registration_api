@@ -22,11 +22,14 @@ module.exports = (db) => {
             let orders = [];
 
             for (let i = 0; i < newparticipant.orders.length; i++) {
-                let events;
-                let sum;
-                events = newparticipant.orders[i].events;
-                sum = newparticipant.orders[i].sum;
-                orders.push({events,sum})
+                // let events;
+                // let sum;
+                let events = newparticipant.orders[i].events;
+                let sum = newparticipant.orders[i].sum;
+                let token = newparticipant.orders[i].token;
+                let paid = newparticipant.orders[i].paid;
+                let paidTo = newparticipant.orders[i].paidTo;
+                orders.push({events, sum, token, paid, paidTo})
             }
 
             // const ans = {
